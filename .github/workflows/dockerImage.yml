@@ -28,13 +28,19 @@ jobs:
       # Build the Docker image
       - name: Build the Docker image
         run: |
-          docker build -t your-dockerhub-username/ml-app:${{ github.sha }} .
+          docker build -t fahadbajwa/fahadbajwa:${{ github.sha }} .
 
       # Push the Docker image with retry mechanism
       - name: Push the Docker image
         run: |
           for i in {1..5}; do
-            docker push your-dockerhub-username/ml-app:${{ github.sha }} && break
+            docker push fahadbajwa/fahadbajwa:${{ github.sha }} && break
             echo "Retrying..."
             sleep 10
           done
+
+      # OPTIONAL: Tag image as 'latest'
+      - name: Tag image as latest
+        run: |
+          docker tag fahadbajwa/fahadbajwa:${{ github.sha }} fahadbajwa/fahadbajwa:latest
+          docker push fahadbajwa/fahadbajwa:latest
